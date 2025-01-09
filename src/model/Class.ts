@@ -4,3 +4,4 @@ export interface Classes {
     name: string
     number: number
 }
+export type EditableClasses = Omit<Classes, 'id'> & {id: null}
