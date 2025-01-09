@@ -20,6 +20,14 @@
                     <router-link to="/class">
                         <el-menu-item index="2">班级管理</el-menu-item>
                     </router-link>
+                    <!-- 考场管理 -->
+                    <router-link to="/examRoom">
+                        <el-menu-item index="3">考场管理</el-menu-item>
+                    </router-link>
+                    <!-- 考试安排预览 -->
+                    <router-link to="/examArrange">
+                        <el-menu-item index="4">考试安排预览</el-menu-item>
+                    </router-link>
                 </el-menu>
 
              </el-scrollbar>
