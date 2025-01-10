@@ -1,5 +1,5 @@
 import type { response } from "@/model/Res";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { ElMessage } from "element-plus";
 
 const req = axios.create({
@@ -17,7 +17,7 @@ req.interceptors.response.use(
       return Promise.reject(new Error(res.msg));
     }
 
-    return Promise.resolve(res);
+    return res;
   },
   (error) => {
     console.log(error);

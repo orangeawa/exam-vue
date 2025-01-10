@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import examManage from '../views/examManage.vue'
 import classManage from '../views/classManage.vue'
+import examRoomManage from '../views/examRoomManage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,11 @@ const router = createRouter({
       path: '/class',
       name: 'class',
       component: classManage,
+    },
+    {
+      path: '/examRoom',
+      name: 'examRoom',
+      component: examRoomManage,
     }
     // {
     //   // path: '/about',
