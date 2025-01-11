@@ -23,3 +23,11 @@ export function formatDate(input: string | Date | number, format: string = 'YYYY
     return format.replace(/YYYY|MM|DD|HH|mm|ss/g, (key) => String(map[key]));
   }
   
+  /** 
+   * 通过传入的时间与传入的时长，返回格式（12月30日10:00-12:00）
+   */
+  export function formatTime(input: string | Date | number, duration: number): string {
+    const date = typeof input === 'string' ? new Date(input) : input instanceof Date ? input : new Date(input);
+    const endTime = new Date(date.getTime() + duration * 60 * 1000);
+    return `${formatDate(date, 'MM月DD日HH:mm')}-${formatDate(endTime, 'HH:mm')}`;
+  }

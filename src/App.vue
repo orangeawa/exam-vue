@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { DataLine } from '@element-plus/icons-vue'
-// import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
+import { DataLine, Operation } from '@element-plus/icons-vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -16,18 +15,24 @@ import { DataLine } from '@element-plus/icons-vue'
                 >
                     <el-menu-item index="/">首页</el-menu-item>
                     
-                    <!-- 考试安排预览 -->
-                    <el-menu-item index="/examArrange">考试安排预览</el-menu-item>
+                    <!-- 功能子菜单 -->
+                    <el-sub-menu index="/tools">
+                        <template #title>
+                            <el-icon><Operation /></el-icon>
+                            <span>功能</span>
+                        </template>
+                        <el-menu-item index="/tools/examArrange">考试安排预览</el-menu-item>
+                    </el-sub-menu>
                     
                     <!-- 数据管理子菜单 -->
-                    <el-sub-menu index="dataManage">
+                    <el-sub-menu index="/dataManage">
                         <template #title>
                             <el-icon><DataLine /></el-icon>
                             <span>数据管理</span>
                         </template>
-                        <el-menu-item index="/exam">考试管理</el-menu-item>
-                        <el-menu-item index="/class">班级管理</el-menu-item>
-                        <el-menu-item index="/examRoom">考场管理</el-menu-item>
+                        <el-menu-item index="/dataManage/exam">考试管理</el-menu-item>
+                        <el-menu-item index="/dataManage/class">班级管理</el-menu-item>
+                        <el-menu-item index="/dataManage/examRoom">考场管理</el-menu-item>
                     </el-sub-menu>
                     
                 </el-menu>

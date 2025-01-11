@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import examManage from '../views/dataManage/examManage.vue'
 import classManage from '../views/dataManage/classManage.vue'
 import examRoomManage from '../views/dataManage/examRoomManage.vue'
+import examArrange from '../views/tools/examArrange.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,20 +13,37 @@ const router = createRouter({
       component: examManage,
     },
     {
-      path: '/exam',
-      name: 'exam',
-      component: examManage,
+      path: '/dataManage',
+      name: 'dataManage',
+      children: [
+        {
+          path: 'exam',
+          name: 'exam',
+          component: examManage,
+        },
+        {
+          path: 'class', 
+          name: 'class',
+          component: classManage,
+        },
+        {
+          path: 'examRoom',
+          name: 'examRoom', 
+          component: examRoomManage,
+        }
+      ]
     },
     {
-      path: '/class',
-      name: 'class',
-      component: classManage,
+      path: '/tools',
+      name: 'tools',
+      children: [
+        {
+          path: 'examArrange',
+          name: 'examArrange',
+          component: examArrange,
+        }
+      ]
     },
-    {
-      path: '/examRoom',
-      name: 'examRoom',
-      component: examRoomManage,
-    }
     // {
     //   // path: '/about',
     //   // name: 'about',
