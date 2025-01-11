@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import examManage from '../views/examManage.vue'
-import classManage from '../views/classManage.vue'
-import examRoomManage from '../views/examRoomManage.vue'
+import examManage from '../views/dataManage/examManage.vue'
+import classManage from '../views/dataManage/classManage.vue'
+import examRoomManage from '../views/dataManage/examRoomManage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
