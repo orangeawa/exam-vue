@@ -10,24 +10,16 @@
              <el-scrollbar>
                 <el-menu
                 class="el-menu"
+                router
+                default-active="/"
                 >
-                    <router-link to="/">
-                        <el-menu-item index="0">首页</el-menu-item>
-                    </router-link>
-                    <router-link to="/exam">
-                        <el-menu-item index="1">考试管理</el-menu-item>
-                    </router-link>
-                    <router-link to="/class">
-                        <el-menu-item index="2">班级管理</el-menu-item>
-                    </router-link>
+                    <el-menu-item index="/">首页</el-menu-item>
+                    <el-menu-item index="/exam">考试管理</el-menu-item>
+                    <el-menu-item index="/class">班级管理</el-menu-item>
                     <!-- 考场管理 -->
-                    <router-link to="/examRoom">
-                        <el-menu-item index="3">考场管理</el-menu-item>
-                    </router-link>
+                    <el-menu-item index="/examRoom">考场管理</el-menu-item>
                     <!-- 考试安排预览 -->
-                    <router-link to="/examArrange">
-                        <el-menu-item index="4">考试安排预览</el-menu-item>
-                    </router-link>
+                    <el-menu-item index="/examArrange">考试安排预览</el-menu-item>
                 </el-menu>
 
              </el-scrollbar>
