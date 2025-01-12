@@ -33,6 +33,8 @@ import { RouterView } from 'vue-router'
                         <el-menu-item index="/dataManage/exam">考试管理</el-menu-item>
                         <el-menu-item index="/dataManage/class">班级管理</el-menu-item>
                         <el-menu-item index="/dataManage/examRoom">考场管理</el-menu-item>
+                        <el-menu-item index="/dataManage/student">学生管理</el-menu-item>
+                        <el-menu-item index="/dataManage/examRoomSeat">考场座位管理</el-menu-item>
                     </el-sub-menu>
                     
                 </el-menu>
