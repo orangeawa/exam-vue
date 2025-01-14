@@ -9,8 +9,8 @@ import type { Classes } from '@/model/Class'
 const tableList = ref<Student[]>([])
 const form = ref<EditableStudent>({
     name: '',
-    studentId: '',
-    className: ''
+    sid: '',
+    class_name: ''
 })
 
 // 班级列表，用于选择班级
