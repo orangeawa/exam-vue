@@ -15,7 +15,7 @@ const form = ref<EditableExam>({
 
 function getList(): void {
     getExamList().then(res => {
-        tableList.value = res.data
+        tableList.value = res
     })
 }
 function submitForm(): void {

@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { getExamArrange } from "@/api/examArrange";
+import { formatTime } from "@/utils/tools";
 import { onMounted, ref } from "vue";
 import type { ExamArrange } from "@/model/ExamArrange";
-import { formatTime } from "@/utils/tools";
-
+import type { Classes } from "@/model/Class";
+import type { Exam } from "@/model/Exam";
+import type { ExamRoom } from "@/model/ExamRoom";
+import { getExamArrange } from "@/api/examArrange";
+import { getClassList } from "@/api/class";
+import { getExamList } from "@/api/exam";
+import { getExamRoomList } from "@/api/examRoom";
 // tab栏
 const activeName = ref<string>("preview");
 
@@ -28,19 +33,37 @@ const handleDelete = (row: ExamArrange) => {
 
 
 // 编辑考试安排
+const form = ref<{
+    examId: number
+    className: string[]
+    examRoomId: number[]
+}>({
+    examId: 0,
+    className: [],
+    examRoomId: []
+})
 
+const examList = ref<Exam[]>([])
+const examRoomList = ref<ExamRoom[]>([])
+const classList = ref<Classes[]>([])
+
+getClassList().then(res => {
+    classList.value = res.data
+})
+getExamList().then(res => {
+    examList.value = res
+})
+getExamRoomList().then(res => {
+    examRoomList.value = res
+})
 
 onMounted(() => {
     getList();
 });
 </script>
 <template>
-    <!-- <div>
-        <el-button type="primary">考试安排预览</el-button>  
-    </div> -->
     <el-tabs v-model="activeName">
         <el-tab-pane label="考试安排预览" name="preview">
-
             <el-table :data="data" style="width: 100%" border>
                 <el-table-column prop="className" label="班级" align="center" />
                 <el-table-column prop="studentCount" label="人数" align="center">
@@ -63,13 +86,58 @@ onMounted(() => {
                     </template>
                 </el-table-column>
             </el-table>
-
         </el-tab-pane>
 
         <el-tab-pane label="考试安排编辑" name="edit">
-
+            <el-row :gutter="20">
+                <!-- 左侧表单 -->
+                <el-col :span="12">
+                    <!-- <el-card shadow="never"> -->
+                        <el-form :model="form" ref="formRef" label-width="100px">
+                            <!-- 选择考试 -->
+                            <el-form-item label="选择考试" prop="examId">
+                                <el-select v-model="form.examId" placeholder="请选择考试" style="width: 100%">
+                                    <el-option v-for="item in examList" :key="item.id" :label="item.name" :value="item.id" />
+                                </el-select>
+                            </el-form-item>
+                            <!-- 分割线 -->
+                            <el-divider />
+                            <!-- 选择班级（多选） -->
+                            <el-form-item label="选择班级" prop="className">
+                                <el-select v-model="form.className" placeholder="请选择班级" multiple style="width: 100%">
+                                    <el-option v-for="item in classList" :key="item.id" :label="item.name" :value="item.id" />
+                                </el-select>
+                            </el-form-item>
+                            <!-- 选择考场（多选） -->
+                            <el-form-item label="选择考场" prop="examRoomId">
+                                <el-select v-model="form.examRoomId" placeholder="请选择考场" multiple style="width: 100%">
+                                    <el-option v-for="item in examRoomList" :key="item.id" :label="item.name" :value="item.id" />
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                    <!-- </el-card> -->
+                </el-col>
+                <!-- 右侧预览区域 -->
+                <el-col :span="12">
+                    <el-card shadow="never">
+                        <template #header>
+                            <div class="card-header">
+                                <span>预览区域</span>
+                            </div>
+                        </template>
+                        <div>
+                            {{ form }}
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
         </el-tab-pane>
     </el-tabs>
 </template>
-<style scoped></style>
+
+<style scoped>
+.card-header {
+    font-weight: bold;
+}
+</style>
 
