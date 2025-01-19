@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getClasses, postClass, type QueryParams, type ClassData, updateClass, deleteClass, updateClassTotalStudents } from '@/api/api'
+import { getClasses, postClass, updateClass, deleteClass, updateClassTotalStudents } from '@/api/api'
+import type { QueryParams, ClassData } from '@/types/types'
 
 const classList = ref<ClassData[]>([])
 const total = ref(0)
