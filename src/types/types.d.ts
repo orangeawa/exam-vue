@@ -45,9 +45,9 @@ export interface ExamScheduleData {
     seat_number: number
     student_id: number
     // 关联数据（用于显示）
-    exam?: ExamData
-    class?: ClassData
-    room?: ExamRoomData
-    student?: StudentData
+    course_name: string
+    class_code: string
+    room_name: string
+    student_name: string
 }
 

@@ -50,6 +50,17 @@ const router = createRouter({
           component: () => import('@/views/dataManage/ExamSchedule.vue')
         }
       ]
+    },
+    {
+      path: '/tools',
+      name: 'tools',
+      children: [
+        {
+          path: 'examArrange',
+          name: 'examArrange',
+          component: () => import('@/views/tools/ExamArrange.vue')
+        }
+      ]
     }
   ],
 })

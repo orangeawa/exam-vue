@@ -21,7 +21,7 @@ import { RouterView } from 'vue-router'
                             <el-icon><Operation /></el-icon>
                             <span>功能</span>
                         </template>
-                        <el-menu-item index="/tools/examArrange">考试安排预览</el-menu-item>
+                        <el-menu-item index="/tools/examArrange">考试安排</el-menu-item>
                     </el-sub-menu>
                     
                     <!-- 数据管理子菜单 -->
