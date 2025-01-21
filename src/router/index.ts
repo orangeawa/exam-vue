@@ -38,6 +38,11 @@ const router = createRouter({
           path: 'exam',
           name: 'exam',
           component: () => import('@/views/dataManage/Exam.vue')
+        },
+        {
+          path: 'examRoom',
+          name: 'examRoom',
+          component: () => import('@/views/dataManage/ExamRoom.vue')
         }
       ]
     }

@@ -1,5 +1,5 @@
 import { get, post, put, del } from "@/utils/request"
-import type { QueryParams, ClassData, StudentData, ExamData } from "@/types/types"
+import type { QueryParams, ClassData, StudentData, ExamData, ExamRoomData } from "@/types/types"
 
 // *班级接口*
 // url: /api.classes
@@ -55,5 +55,22 @@ export const updateExam = (id: number, data: Partial<ExamData>) => {
 
 export const deleteExam = (id: number) => {
     return del(`/exams/${id}`)
+}
+
+// *考场接口*
+export const postExamRoom = (data: Partial<ExamRoomData>) => {
+    return post('/exam_rooms', data)
+}
+
+export const getExamRooms = (params: QueryParams) => {
+    return get<ExamRoomData[]>('/exam_rooms', params)
+}
+
+export const updateExamRoom = (id: number, data: Partial<ExamRoomData>) => {
+    return put(`/exam_rooms/${id}`, data)
+}
+
+export const deleteExamRoom = (id: number) => {
+    return del(`/exam_rooms/${id}`)
 }
 

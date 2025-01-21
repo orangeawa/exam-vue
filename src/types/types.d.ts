@@ -29,3 +29,10 @@ export interface ExamData {
     description: string
 }
 
+// 考场数据接口
+export interface ExamRoomData {
+    id: number
+    room_name: string
+    capacity: number
+}
+
