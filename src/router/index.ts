@@ -19,6 +19,27 @@ const router = createRouter({
       path: '/dataManage/student',
       name: 'studentManage',
       component: studentManage,
+    },
+    {
+      path: '/dataManage',
+      name: 'dataManage',
+      children: [
+        {
+          path: 'class',
+          name: 'class',
+          component: () => import('@/views/dataManage/Class.vue')
+        },
+        {
+          path: 'student',
+          name: 'student',
+          component: () => import('@/views/dataManage/Student.vue')
+        },
+        {
+          path: 'exam',
+          name: 'exam',
+          component: () => import('@/views/dataManage/Exam.vue')
+        }
+      ]
     }
   ],
 })

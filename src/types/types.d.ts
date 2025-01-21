@@ -20,3 +20,12 @@ export interface StudentData {
     class_id: number
 }
 
+// 考试数据接口
+export interface ExamData {
+    id: number
+    course_name: string
+    exam_time: string
+    duration: number
+    description: string
+}
+
