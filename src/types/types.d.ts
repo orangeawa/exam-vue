@@ -11,3 +11,12 @@ export interface ClassData {
     class_code: string
     total_students: number
 }
+
+// 学生数据接口
+export interface StudentData {
+    id: number
+    student_id: string
+    student_name: string
+    class_id: number
+}
+

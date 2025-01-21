@@ -89,6 +89,7 @@ getList()
         </el-col>
         <el-col :span="18">
             <el-table :data="classList" style="width: 100%; margin-bottom: 20px">
+                <el-table-column prop="id" label="唯一id" />
                 <el-table-column prop="class_code" label="班级代码" />
                 <el-table-column prop="total_students" label="班级人数" />
                 <el-table-column label="操作">
