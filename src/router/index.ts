@@ -43,6 +43,11 @@ const router = createRouter({
           path: 'examRoom',
           name: 'examRoom',
           component: () => import('@/views/dataManage/ExamRoom.vue')
+        },
+        {
+          path: 'examSchedule',
+          name: 'examSchedule',
+          component: () => import('@/views/dataManage/ExamSchedule.vue')
         }
       ]
     }

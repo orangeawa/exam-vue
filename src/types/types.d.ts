@@ -36,3 +36,18 @@ export interface ExamRoomData {
     capacity: number
 }
 
+// 考试安排数据接口
+export interface ExamScheduleData {
+    id: number
+    exam_id: number
+    class_id: number
+    room_id: number
+    seat_number: number
+    student_id: number
+    // 关联数据（用于显示）
+    exam?: ExamData
+    class?: ClassData
+    room?: ExamRoomData
+    student?: StudentData
+}
+
