@@ -29,11 +29,6 @@ const getList = () => {
 const handleAdd = () => {
     postExamRoom(form.value).then(res => {
         getList()
-        form.value = {
-            id: 0,
-            room_name: '',
-            capacity: 30
-        }
     })
 }
 
