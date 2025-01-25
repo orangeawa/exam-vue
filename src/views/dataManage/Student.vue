@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getStudents, postStudent, updateStudent, deleteStudent, getClasses } from '@/api/api'
+import { getStudents, postStudent, updateStudent, deleteStudent, getClasses, postClassBatch, postStudentBatch } from '@/api/api'
 import type { QueryParams, StudentData, ClassData } from '@/types/types'
+import * as XLSX from 'xlsx'
+import { ElMessageBox } from 'element-plus'
 
 const studentList = ref<StudentData[]>([])
 const total = ref(0)
@@ -34,6 +36,9 @@ const getList = () => {
 // 获取班级列表
 const getClassList = () => {
     getClasses({ pageNum: 1, pageSize: 1000 }).then(res => {
+
+        console.log(res.data);
+        
         classList.value = res.data
     })
 }
@@ -66,6 +71,7 @@ const handleDelete = (row: StudentData) => {
     })
 }
 
+// 分页逻辑
 const handleSizeChange = (val: number) => {
     queryParams.value.pageSize = val
     getList()
@@ -87,6 +93,108 @@ const getClassName = (classId: number) => {
     const classItem = classList.value.find(item => item.id === classId)
     return classItem ? classItem.class_code : '未知班级'
 }
+
+// 添加文件上传相关的逻辑
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+// 处理文件上传
+const handleFileUpload = async (event: Event) => {
+    const target = event.target as HTMLInputElement
+    const file = target.files?.[0]
+    if (!file) return
+
+    // 读取文件
+    const reader = new FileReader()
+    reader.onload = async (e) => {
+        const data = e.target?.result
+        const workbook = XLSX.read(data, { type: 'binary' })
+        const firstSheetName = workbook.SheetNames[0]
+        const worksheet = workbook.Sheets[firstSheetName]
+        
+        // 将表格数据转换为JSON
+        const jsonData = XLSX.utils.sheet_to_json(worksheet)
+
+        // 班级代码列表
+        const classCodeList = new Set(jsonData.map((item: any) => item['班级']))
+
+        // 新班级代码列表
+        const newClassCodes: string[] = []
+
+        classCodeList.forEach((item: any) => {
+            if (classList.value.some(c => c.class_code === item)) 
+                return
+            newClassCodes.push(item)
+        })
+
+        // 有新的班级，是否添加？
+        if (newClassCodes.length > 0) {
+            await ElMessageBox.confirm(
+                '有新的班级，是否添加？\n' + newClassCodes.join(', '), 
+                '提示', 
+                {confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning',}
+            )
+
+            await postClassBatch(newClassCodes)
+            await getClassList()
+        }
+
+        // 处理学生数据
+        const studentData: Omit<StudentData,'id'>[] = jsonData.map((item: any) => {
+            return {
+                student_id: item['学号'],
+                student_name: item['姓名'],
+                class_id: getClassIdByCode(item['班级'])
+            }
+        })
+
+        // 发送批量添加学生请求
+        postStudentBatch(studentData).then(res => {
+            getList()
+        })
+
+    }
+    reader.readAsBinaryString(file)
+
+    // 清空文件输入框，以便可以重复上传同一个文件
+    if (fileInputRef.value) {
+        fileInputRef.value.value = ''
+    }
+}
+
+// 通过班级代码获取班级ID
+const getClassIdByCode = (classCode: string | undefined): number => {
+    if (!classCode) return 0
+    const classItem = classList.value.find(item => item.class_code === classCode)
+    return classItem?.id || 0
+}
+
+// 触发文件选择
+const handleBatchAdd = () => {
+    fileInputRef.value?.click()
+}
+
+// 下载模板
+const downloadTemplate = () => {
+    // 创建工作簿
+    const wb = XLSX.utils.book_new()
+    
+    // 创建工作表数据
+    const wsData = [
+        ['学号', '姓名', '班级'],
+        ['2021001', '张三', '04F2111'],
+        ['2021002', '李四', '04F2111']
+    ]
+    
+    // 创建工作表
+    const ws = XLSX.utils.aoa_to_sheet(wsData)
+    
+    // 将工作表添加到工作簿
+    XLSX.utils.book_append_sheet(wb, ws, '学生信息')
+    
+    // 导出文件
+    XLSX.writeFile(wb, '学生信息导入模板.xlsx')
+}
+
 </script>
 
 <template>
@@ -111,6 +219,8 @@ const getClassName = (classId: number) => {
                         </el-select>
                     </el-form-item>
                     <el-button type="primary" @click="handleAdd">新增</el-button>
+                    <el-button type="primary" @click="handleBatchAdd">批量添加</el-button>
+                    <el-button type="info" @click="downloadTemplate">下载模板</el-button>
                 </el-form>
             </el-card>
         </el-col>
@@ -173,6 +283,15 @@ const getClassName = (classId: number) => {
             </span>
         </template>
     </el-dialog>
+
+    <!-- 添加隐藏的文件输入框 -->
+    <input
+        ref="fileInputRef"
+        type="file"
+        accept=".xlsx,.xls"
+        style="display: none"
+        @change="handleFileUpload"
+    >
 </template>
 
 <style scoped>

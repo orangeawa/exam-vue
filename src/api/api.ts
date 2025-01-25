@@ -23,6 +23,10 @@ export const updateClassTotalStudents = (id: number) => {
     return get(`/classes/update_student_count/${id}`, {})
 }
 
+export const postClassBatch = (data: string[]) => {
+    return post('/classes/batch_add', data)
+}
+
 // *学生接口*
 export const getStudents = (params: QueryParams) => {
     return get<StudentData[]>('/students', params)
@@ -38,6 +42,10 @@ export const updateStudent = (id: number, data: Partial<StudentData>) => {
 
 export const deleteStudent = (id: number) => {
     return del(`/students/${id}`)
+}
+
+export const postStudentBatch = (data: Omit<StudentData,'id'>[]) => {
+    return post('/students/batch_add', data)
 }
 
 // *考试接口*
