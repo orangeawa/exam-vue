@@ -41,7 +41,8 @@ const getOptions = async () => {
         getExams({ pageNum: 1, pageSize: 1000 }),
         getClasses({ pageNum: 1, pageSize: 1000 }),
         getExamRooms({ pageNum: 1, pageSize: 1000 }),
-        getStudents({ pageNum: 1, pageSize: 1000 })
+        // TODO 需要优化，获取学生数据时，需要根据班级id进行筛选
+        getStudents({ pageNum: 1, pageSize: 2000 })
     ])
     examList.value = exams.data
     classList.value = classes.data

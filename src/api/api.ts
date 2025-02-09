@@ -103,10 +103,14 @@ export const deleteExamSchedule = (id: number) => {
 export interface BatchScheduleParams {
     exam_id: number
     class_ids: number[]
-    room_ids: number[]
 }
 
 export const batchCreateSchedules = (data: BatchScheduleParams) => {
-    return post('/exam_schedules/batch', data)
+    return post('/exam_schedules/batch_by_exam_and_class', data)
+}
+
+// 获取考试时间段的剩余座位信息
+export const getSeats = (exam_id: number) => {
+    return get<{ total_seats: number, remaining_seats: number }>(`/exam_schedules/seats/${exam_id}`, {})
 }
 
