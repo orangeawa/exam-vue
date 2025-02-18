@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { getExams, getClasses, batchCreateSchedules, getSeats } from '@/api/api'
+import { getExams, getClasses, batchCreateSchedules, getSeats, getExamScheduleById } from '@/api/api'
 import type { ExamData, ClassData } from '@/types/types'
 
 const form = ref<{
@@ -31,7 +31,6 @@ const getSeatsInfo = async (examId: number) => {
         if (data) {
             totalSeats.value = data.total_seats
             remainingSeats.value = data.remaining_seats
-
         }
     } catch (error) {
         console.error('获取座位信息失败:', error)
@@ -44,6 +43,7 @@ const getSeatsInfo = async (examId: number) => {
 watch(() => form.value.exam_id, (newExamId) => {
     if (newExamId) {
         getSeatsInfo(newExamId)
+        getExamInfo()
     }
 })
 
@@ -75,6 +75,14 @@ const handleBatchAdd = async () => {
 }
 
 
+// ========= 排考信息显示 =========
+const infoData = ref<{ classes: string, examinees: number, examroom: string, course: string }[]>([])
+
+const getExamInfo = async () => {
+    const res = await getExamScheduleById(form.value.exam_id)
+    infoData.value = res.data
+}
+
 
 onMounted(() => {
     getExamList()
@@ -84,21 +92,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
-        <el-form :model="form" label-position="top">
+    <div style="display: flex;gap: 40px;">
+        <el-form :model="form" label-position="top" style="flex: 2;">
             <el-form-item label="考试名称">
-                <el-select 
-                    v-model="form.exam_id" 
-                    placeholder="请选择考试" 
-                    style="width: 100%"
-                    filterable
-                >
-                    <el-option 
-                        v-for="exam in examList" 
-                        :key="exam.id" 
-                        :label="exam.course_name" 
-                        :value="exam.id" 
-                    />
+                <el-select v-model="form.exam_id" placeholder="请选择考试" style="width: 100%" filterable>
+                    <el-option v-for="exam in examList" :key="exam.id" :label="exam.course_name" :value="exam.id" />
                 </el-select>
             </el-form-item>
 
@@ -118,6 +116,17 @@ onMounted(() => {
             <el-button type="primary" @click="handleBatchAdd">批量添加考试安排</el-button>
 
         </el-form>
+
+        <div style="flex: 3;">
+            <h3 style="text-align: center;">考试名称：{{ examList.find(exam => exam.id === form.exam_id)?.course_name ||
+            '未选择' }}</h3>
+            <el-table :data="infoData">
+                <el-table-column prop="classes" label="班级"></el-table-column>
+                <el-table-column prop="examinees" label="考场人数"></el-table-column>
+                <el-table-column prop="examroom" label="考试地点"></el-table-column>
+                <el-table-column prop="course" label="考试科目"></el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 

@@ -65,6 +65,10 @@ export const deleteExam = (id: number) => {
     return del(`/exams/${id}`)
 }
 
+export const getExamTimeRanges = () => {
+    return get<{ exam_time: string, duration: number }[]>('/exams/time_ranges', {})
+}
+
 // *考场接口*
 export const postExamRoom = (data: Partial<ExamRoomData>) => {
     return post('/exam_rooms', data)
@@ -114,3 +118,7 @@ export const getSeats = (exam_id: number) => {
     return get<{ total_seats: number, remaining_seats: number }>(`/exam_schedules/seats/${exam_id}`, {})
 }
 
+// 获取考试安排的考场信息
+export const getExamScheduleById = (id: number) => {
+    return get<{ classes: string, examinees: number, examroom: string, course: string }[]>(`/exam_schedules/rooms/${id}`, {})
+}

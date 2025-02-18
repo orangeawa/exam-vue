@@ -5,12 +5,23 @@
  * @returns 格式化后的时间字符串
  */
 export function formatDate(input: string | Date | number, format: string = 'YYYY-MM-DD HH:mm:ss'): string {
+    // 将输入转换为Date对象
+    // 如果是字符串，转换为Date
+    // 如果是Date实例，直接使用
+    // 如果是数字（时间戳），转换为Date
     const date = typeof input === 'string' 
       ? new Date(input) 
       : input instanceof Date 
         ? input 
         : new Date(input);
   
+    // 定义时间格式映射对象
+    // YYYY: 年份
+    // MM: 月份，补零
+    // DD: 日期，补零
+    // HH: 小时，补零
+    // mm: 分钟，补零
+    // ss: 秒数，补零
     const map: { [key: string]: number | string } = {
       YYYY: date.getFullYear(),
       MM: String(date.getMonth() + 1).padStart(2, '0'),
@@ -20,6 +31,7 @@ export function formatDate(input: string | Date | number, format: string = 'YYYY
       ss: String(date.getSeconds()).padStart(2, '0'),
     };
   
+    // 使用正则表达式替换格式字符串中的占位符
     return format.replace(/YYYY|MM|DD|HH|mm|ss/g, (key) => String(map[key]));
   }
   
